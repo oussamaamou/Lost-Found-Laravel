@@ -12,6 +12,9 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Lien du Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

@@ -2,6 +2,9 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+        <!-- Lien du Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />

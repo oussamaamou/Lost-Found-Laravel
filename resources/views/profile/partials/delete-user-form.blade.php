@@ -1,4 +1,7 @@
 <section class="space-y-6">
+    <!-- Lien du Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Delete Account') }}

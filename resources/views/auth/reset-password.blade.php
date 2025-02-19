@@ -2,6 +2,9 @@
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
+        <!-- Lien du Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
         <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 

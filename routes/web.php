@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PosteController;
 use Illuminate\Support\Facades\Route;
@@ -29,12 +30,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
+    // Route::get('/dashboard', [CategorieController::class, 'getAllCategories'])->name('dashboard.categorie');
+    Route::get('/dashboard', [PosteController::class, 'getMyPostes'])->middleware(['auth', 'verified'])->name('dashboard');
+    
     Route::post('/dashboard/create', [PosteController::class, 'create'])->name('dashboard.create');
-    Route::post('/dashboard/edit', [PosteController::class, 'edit'])->name('dashboard.edit');
-    Route::get('/dashboard/delete', [PosteController::class, 'delete'])->name('dashboard.delete');
-    Route::get('/dashboard', [PosteController::class, 'getMyPostes'])->name('dashboard');
-    // Route::get('/dashboard', [CategorieController::class, 'getAllCategories'])->name('dashboard.categories');
+    Route::get('/postes/edit/{poste}', [PosteController::class, 'edit'])->name('poste.edit');
+    Route::put('/postes/edit/{poste}/editPoste', [PosteController::class, 'editPoste'])->name('poste.editPoste');
+    Route::post('/postes/delete/{poste}/deletePoste', [PosteController::class, 'deletePoste'])->name('poste.deletePoste');
+    
+    Route::post('/dashboard/createComment', [CommentaireController::class, 'createComment'])->name('dashboard.createComment');
+    Route::get('/post/{id}/comments', [CommentaireController::class, 'getCommentsByPost'])->name('comments.get');
+    Route::get('/postes/{poste_id}/comments', [CommentaireController::class, 'getCommentsByPost'])->name('post.comments');
+
 
 });
 

@@ -7,9 +7,8 @@
 
     <!-- Lien du Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-     <!-- Lien des Icons -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
- 
+    <!-- Lien des Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
     
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
@@ -41,8 +40,9 @@
                         <div>
                             <label for="categorie_id" class="block mb-2 text-sm font-medium text-stone-700 dark:text-white">Categorie </label>
                             <select id="categorie_id" name="categorie_id" class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="1">Telephone</option>
-                                <option value="2">Document</option>
+                                @foreach ($categories as $categorie)
+                                <option value="{{ $categorie->id }}">{{ $categorie->nom }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -108,15 +108,19 @@
 
                         <div class="grid mt-8 grid-cols-2">
                             <div>
-                                <button id="ajtpost" type="button" class="ml-[0rem] text-white bg-yellow-300 hover:bg-yellow-400 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
+                                <a href="{{route('poste.edit', ['poste' => $poste])}}">
+                                <button id="" type="button" class="ml-[0rem] text-white bg-yellow-300 hover:bg-yellow-400 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
 
                                 </button>
+                                </a>
                             </div>
                         
-                            <form id="" method="POST">
+                            <form id="" method="POST" action="{{route('poste.deletePoste', ['poste' => $poste])}}">
+                                @csrf
+
                                 <input type="hidden" name="supprimer_cours" value="1">
 
                                 <button class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-red-900">
@@ -142,6 +146,84 @@
                     </div>
                 </div>
 
+                <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+                @php
+                    $comments = \App\Models\Commentaire::where('poste_id', $poste->id)->with('user')->get();
+                @endphp
+
+                <div class="w-full relative flex justify-between gap-2">
+                    <form action="{{route('dashboard.createComment')}}" method="POST" class="w-full">
+                        @csrf
+
+                        <input type="hidden" name="users_id" value="{{ Auth::user()->id }}">
+                        <input type="hidden" name="poste_id" value="{{ $poste->id }}">
+                        <input type="text" name="contenue"
+                            class="w-full py-3 px-5 rounded-lg border border-gray-300 bg-white shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] focus:outline-none text-gray-900 placeholder-gray-400 text-sm font-normal leading-relaxed"
+                            placeholder="Write comments here....">
+                        <button type="submit" class="absolute right-6 top-[18px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                fill="none">
+                                <path
+                                    d="M11.3011 8.69906L8.17808 11.8221M8.62402 12.5909L8.79264 12.8821C10.3882 15.638 11.1859 17.016 12.2575 16.9068C13.3291 16.7977 13.8326 15.2871 14.8397 12.2661L16.2842 7.93238C17.2041 5.17273 17.6641 3.79291 16.9357 3.06455C16.2073 2.33619 14.8275 2.79613 12.0679 3.71601L7.73416 5.16058C4.71311 6.16759 3.20259 6.6711 3.09342 7.7427C2.98425 8.81431 4.36221 9.61207 7.11813 11.2076L7.40938 11.3762C7.79182 11.5976 7.98303 11.7083 8.13747 11.8628C8.29191 12.0172 8.40261 12.2084 8.62402 12.5909Z"
+                                    stroke="#111827" stroke-width="1.6" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </form>
+                
+                </div>
+
+                <div>
+                    <hr class="h-px w-[50rem] my-4 bg-gray-200 border-0 dark:bg-gray-700">
+
+                    <svg id="morecmnt" class="w-4 h-4 text-orange-700 cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 10">
+                        <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z"/>
+                    </svg>
+                    <svg id="lesscmnt" class="w-4 h-4 text-orange-700 cursor-pointer hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 10 16">
+                        <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"/>
+                    </svg>
+                </div>
+
+                <div id="cmntsction" class="w-full flex-col justify-start items-start gap-8 flex hidden">
+                    
+                    @if($comments->count() > 0)
+                        @foreach ($comments as $comment)
+                        <div class="w-full flex-col justify-start items-end gap-5 flex">
+                            <div
+                                class="w-full p-6 bg-white rounded-2xl border border-gray-200 flex-col justify-start items-start gap-8 flex">
+                                <div class="w-full flex-col justify-center items-start gap-3.5 flex">
+                                    <div class="w-full justify-between items-center inline-flex">
+                                        <div class="justify-start items-center gap-2.5 flex">
+                                            <div
+                                                class="w-10 h-10 bg-gray-300 rounded-full justify-start items-start gap-2.5 flex">
+                                                <img class="rounded-full object-cover" src="https://st5.depositphotos.com/17433220/73304/i/450/depositphotos_733041078-stock-photo-silhouette-adult-man-male-avatar.jpg"
+                                                    alt="Lecteur image" />
+                                            </div>
+                                            <div class="flex-col justify-start items-start gap-1 inline-flex">
+                                                <h5 class="text-gray-900 text-sm font-semibold leading-snug">
+                                                {{ $comment->user->name }}
+                                                </h5>
+                                                <h6 class="text-gray-500 text-xs font-normal leading-5">12-02-2025</h6>
+                                            </div>
+                                        </div>
+                                        <div class="w-6 h-6 relative">
+                                            <div class="w-full h-fit flex">
+                                                <div class="relative w-full">
+                                                    <div class="absolute left-0 top-0 py-2.5 px-4 text-gray-300"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-800 text-sm font-normal leading-snug">{{ $comment->contenue }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    @endif
+                    
+                </div>
+
+                <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
             </div>
 
         <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -155,14 +237,37 @@
         const ctnr2 = document.getElementById("postform");
         const xmark2 = document.getElementById("xmarkcsltion2");
         const ajtpost = document.getElementById("ajtpost");
+        const postedit = document.getElementById("postedit");
 
         xmark2?.addEventListener('click', function(){
             ctnr2.classList.add('hidden');
         });
 
-
         ajtpost?.addEventListener('click', function(){
             ctnr2.classList.remove('hidden');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const morecmntButtons = document.querySelectorAll("#morecmnt");
+            const lesscmntButtons = document.querySelectorAll("#lesscmnt");
+            const cmntSections = document.querySelectorAll("#cmntsction");
+
+            morecmntButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    cmntSections[index].classList.remove('hidden');
+                    button.classList.add('hidden'); 
+                    lesscmntButtons[index].classList.remove('hidden');
+                });
+            });
+
+            lesscmntButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    cmntSections[index].classList.add('hidden');
+                    button.classList.add('hidden'); 
+                    morecmntButtons[index].classList.remove('hidden');
+                });
+            });
         });
 
     </script>

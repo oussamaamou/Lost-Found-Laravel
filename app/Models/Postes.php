@@ -22,4 +22,10 @@ class Postes extends Model
         'users_id'
     ];
 
+    public function commentaires(){
+
+        return $this->hasMany(Commentaire::class, 'poste_id');
+    }
+
+
 }

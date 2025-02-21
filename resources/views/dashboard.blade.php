@@ -202,7 +202,7 @@
                                                 <h5 class="text-gray-900 text-sm font-semibold leading-snug">
                                                 {{ $comment->user->name }}
                                                 </h5>
-                                                <h6 class="text-gray-500 text-xs font-normal leading-5">12-02-2025</h6>
+                                                
                                             </div>
                                         </div>
                                         <div class="w-6 h-6 relative">

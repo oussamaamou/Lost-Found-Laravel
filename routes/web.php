@@ -31,8 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    // Route::get('/dashboard', [CategorieController::class, 'getAllCategories'])->name('dashboard.categorie');
     Route::get('/dashboard', [PosteController::class, 'getMyPostes'])->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/index', [PosteController::class, 'getAllPostes'])->middleware(['auth', 'verified'])->name('index');
+    Route::post('/search', [PosteController::class, 'search'])->middleware(['auth', 'verified'])->name('search');
+    Route::post('/filter', [PosteController::class, 'filterByCategorie'])->middleware(['auth', 'verified'])->name('filter');
     
     Route::post('/dashboard/create', [PosteController::class, 'create'])->name('dashboard.create');
     Route::get('/postes/edit/{poste}', [PosteController::class, 'edit'])->name('poste.edit');

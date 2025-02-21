@@ -35,6 +35,11 @@
                         <textarea name="description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Écrivez votre biographie ici..."></textarea>
                     </div>
 
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-stone-700 dark:text-white" for="photo">Photo</label>
+                        <input name="photo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-[7px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="file">
+                    </div>
+
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
 
                         <div>
@@ -136,9 +141,9 @@
                     </div>
 
                     <div class="md:w-2/3 md:pl-8">
-                        <p class="text-gray-700 font-semibold text-2xl dark:text-gray-300 mb-6"> {{ $poste->titre }}</p>
+                        <p class="text-gray-700 font-semibold text-2xl dark:text-gray-300 mb-6 object-contain"> {{ $poste->titre }}</p>
                         <div class="grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg lg:overflow-visible">
-                        <img class="object-fit object-center w-full h-96" src="https://d2u4q3iydaupsp.cloudfront.net/k5GdinclmQaklFxCIZxP3piLQokCg87uXpmu5bs4MjIdbJno9lYsI2gvqJJKb0seEq5mqhstxZCKennqUdTKgdzlULeXRsEKDNVE5JgKvcN3DqcCQneLY1b213iaBNM8" alt="nature image"/>
+                        <img class="object-fit object-center w-full h-96" src="{{ $poste->photo }}" alt="Image du Produit"/>
                         </div>
                         <p class="text-gray-700 dark:text-gray-300 mb-6 mt-6">
                             {{ $poste->description }}

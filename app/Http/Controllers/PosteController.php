@@ -31,6 +31,7 @@ class PosteController extends Controller
 
             'titre' => 'required|string',
             'description' => 'required|string',
+            'photo' => 'nullable|mimes: png,jpg,jpeg',
             'categorie_id' => 'required|numeric',
             'telephone' => 'required|string',
             'email' => 'required|email',
@@ -39,6 +40,18 @@ class PosteController extends Controller
             'users_id' => 'required|numeric'
             
         ]);
+
+        if($request->has('photo')){
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+
+            $filename = time().'.'.$extension;
+
+            $path = public_path('/uploads/images/');
+            $file->move($path, $filename);
+
+            $data['photo'] = '/uploads/images/' . $filename;
+        }
 
         $newPoste = Postes::create($data);
         return redirect(route('dashboard'));

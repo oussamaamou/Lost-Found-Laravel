@@ -15,6 +15,7 @@ class Postes extends Model
         'titre',
         'categorie_id',
         'description',
+        'photo',
         'dateAction',
         'lieuAction',
         'email',

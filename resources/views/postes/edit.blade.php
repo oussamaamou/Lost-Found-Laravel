@@ -21,7 +21,7 @@
             <i id="xmarkedit" class="fa-solid fa-xmark ml-[26rem] text-2xl cursor-pointer mt-[1.2rem] text-white"></i>
             <div class="space-y-6 py-8 px-10">
                 <h1 class="text-xl mt-[-2rem] font-bold leading-tight tracking-tight text-stone-700 md:text-2xl dark:text-white">
-                    Publier votre Cours 
+                    Modifier votre Poste 
                 </h1>
                 <form action="{{route('poste.editPoste', ['poste' => $poste])}}" class="space-y-1" method="POST" enctype="multipart/form-data">
                     @csrf
